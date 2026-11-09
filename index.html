@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wells Analytics — Landing Mock (alfa8-inspired)</title>
+  <!-- Fonts close to alfa8: Questrial ≈ Century Gothic feel; IBM Plex Mono for labels -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Questrial&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --font: "Questrial", "Century Gothic", CenturyGothic, "Avenir Next", Arial, sans-serif;
+      --mono: "IBM Plex Mono", ui-monospace, monospace;
+      --coral: #f9810b;          /* alfa8 accent */
+      --coral-soft: #ff9a3c;
+      --nav-gray: #9a9a9a;
+      --bar: #b0b0b0;
+      --white: #ffffff;
+      --ink: #1a1a1a;
+      --muted: rgba(255,255,255,.88);
+      --paper: #f4f4f2;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      color: var(--white);
+      background: #ececec;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; height: auto; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ——— TOP BAR (alfa8-style gray bar) ——— */
+    .topbar {
+      background: var(--bar);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .65rem clamp(1rem, 3vw, 2.5rem);
+      position: relative; z-index: 40;
+    }
+    .brand {
+      display: flex; align-items: center; gap: .65rem;
+      color: #fff; font-size: .95rem; letter-spacing: .04em;
+    }
+    .brand-logo {
+      height: 40px; width: auto; display: block;
+    }
+    .nav-links {
+      display: none; gap: 1.35rem; list-style: none;
+    }
+    .nav-links a {
+      color: #fff; font-size: .72rem; letter-spacing: .14em; text-transform: uppercase;
+      opacity: .95; transition: opacity .2s;
+    }
+    .nav-links a:hover { opacity: .7; }
+    @media (min-width: 860px) { .nav-links { display: flex; } }
+
+    /* ——— HERO ——— */
+    .hero {
+      position: relative;
+      min-height: calc(100vh - 48px);
+      min-height: calc(100dvh - 48px);
+      isolation: isolate;
+      overflow: hidden;
+    }
+
+    /* Luminous blue–green (alfa8 brightness; not dark navy blocks) */
+    .hero-geo {
+      position: absolute; inset: 0; z-index: 0;
+      background: linear-gradient(105deg,
+        #8aa8a0 0%,
+        #97b8a8 16%,
+        #a8c9b0 32%,
+        #9fd0c4 48%,
+        #8ec8e0 64%,
+        #9ed4f0 80%,
+        #c8e8fa 100%
+      );
+    }
+    .hero-geo svg {
+      width: 100%; height: 100%;
+      opacity: .95;
+      animation: drift 30s ease-in-out infinite alternate;
+    }
+    @keyframes drift {
+      from { transform: scale(1.02); }
+      to { transform: scale(1.05) translate3d(-1%, .5%, 0); }
+    }
+
+    .hero-veil {
+      position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(50,70,72,.32) 0%, rgba(50,70,72,.12) 36%, transparent 58%),
+        linear-gradient(180deg, rgba(0,0,0,.06) 0%, transparent 24%, transparent 80%, rgba(0,0,0,.1) 100%);
+    }
+
+    .hero-inner {
+      position: relative; z-index: 2;
+      width: min(1120px, 100%);
+      margin: 0 auto;
+      padding: clamp(3.5rem, 10vh, 6rem) clamp(1.25rem, 4vw, 2.75rem) 3.5rem;
+      display: grid;
+      gap: 2rem;
+      align-items: center;
+      min-height: inherit;
+    }
+    @media (min-width: 900px) {
+      .hero-inner { grid-template-columns: 1.15fr .85fr; }
+    }
+
+    .tag {
+      display: inline-flex; align-items: center; gap: .55rem;
+      font-family: var(--mono);
+      font-size: .72rem; letter-spacing: .06em;
+      color: rgba(255,255,255,.92);
+      margin-bottom: 1.35rem;
+    }
+    .tag i {
+      width: 8px; height: 8px; background: var(--coral); display: inline-block;
+    }
+
+    .hero h1 {
+      font-family: var(--font);
+      font-weight: 400;
+      font-size: clamp(2.4rem, 6.5vw, 4.6rem);
+      line-height: .98;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      color: #ffffff;
+      margin-bottom: 1.1rem;
+      text-shadow: 0 2px 18px rgba(0,0,0,.28);
+      animation: rise .8s ease both;
+    }
+    .hero h1 span {
+      display: block;
+      font-size: .42em;
+      letter-spacing: .08em;
+      margin-top: .35rem;
+      opacity: .95;
+    }
+    .hero-lead {
+      font-size: clamp(1rem, 1.4vw, 1.15rem);
+      line-height: 1.55;
+      color: var(--muted);
+      max-width: 34rem;
+      margin-bottom: 1.75rem;
+      text-shadow: 0 1px 12px rgba(0,0,0,.2);
+      animation: rise .9s .05s ease both;
+    }
+    .ph { opacity: .7; font-size: .9em; }
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    .cta-row { display: flex; flex-wrap: wrap; gap: 1rem 1.35rem; align-items: center; }
+    .btn {
+      display: inline-flex; align-items: center; gap: .45rem;
+      padding: .85rem 1.25rem;
+      background: var(--coral);
+      color: #fff;
+      font-size: .82rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      transition: background .2s ease, transform .2s ease;
+    }
+    .btn:hover { background: var(--coral-soft); transform: translateY(-1px); }
+    .btn-ghost {
+      background: transparent;
+      border-bottom: 1px solid rgba(255,255,255,.75);
+      padding-left: 0; padding-right: 0; padding-bottom: .25rem;
+      letter-spacing: .1em;
+    }
+    .btn-ghost:hover { background: transparent; border-bottom-color: #fff; transform: none; }
+
+    /* Original Wells ornament: compass + network nodes (not alfa8 flower) */
+    .ornament {
+      position: relative;
+      min-height: 280px;
+      display: grid; place-items: center;
+    }
+    .wells-mark {
+      width: min(100%, 320px);
+      aspect-ratio: 1;
+      opacity: .9;
+      animation: softPulse 8s ease-in-out infinite;
+    }
+    @keyframes softPulse {
+      0%,100% { opacity: .75; transform: scale(1); }
+      50% { opacity: .95; transform: scale(1.015); }
+    }
+    .coord {
+      position: absolute; left: 0; bottom: 0;
+      font-family: var(--mono);
+      font-size: .62rem; letter-spacing: .12em; text-transform: uppercase;
+      color: rgba(255,255,255,.55);
+    }
+    @media (max-width: 899px) {
+      .ornament { min-height: 200px; }
+      .wells-mark { width: min(72%, 230px); }
+    }
+
+    /* Bottom partner-style bar */
+    .partner-bar {
+      background: var(--bar);
+      padding: .85rem clamp(1rem, 3vw, 2.5rem);
+      display: flex; flex-wrap: wrap; gap: .75rem 1.5rem;
+      align-items: center; justify-content: space-between;
+      color: #fff; font-size: .78rem; letter-spacing: .04em;
+    }
+    .partner-bar strong { font-weight: 400; letter-spacing: .08em; text-transform: uppercase; }
+
+    /* Sections */
+    .section { padding: clamp(3.25rem, 6vw, 5rem) clamp(1.25rem, 4vw, 2.75rem); background: #fff; color: var(--ink); }
+    .section.alt { background: var(--paper); }
+    .section.dark {
+      background: linear-gradient(120deg, #4a6b6e 0%, #5f8f9a 45%, #6fa8c4 100%);
+      color: #fff;
+    }
+    .section-inner { width: min(1080px, 100%); margin: 0 auto; }
+    .kicker {
+      font-family: var(--mono); font-size: .7rem; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--coral); margin-bottom: .55rem;
+    }
+    .section.dark .kicker { color: #ffe0b8; }
+    .section h2 {
+      font-family: var(--font); font-weight: 400;
+      font-size: clamp(1.7rem, 3vw, 2.35rem);
+      text-transform: uppercase; letter-spacing: .02em;
+      line-height: 1.1; margin-bottom: .75rem;
+    }
+    .lede { font-size: 1.05rem; line-height: 1.55; max-width: 38rem; color: #444; margin-bottom: 1.75rem; }
+    .section.dark .lede { color: rgba(255,255,255,.9); }
+
+    .split { display: grid; gap: 1.75rem; align-items: center; }
+    @media (min-width: 860px) {
+      .split { grid-template-columns: 1.05fr .95fr; gap: 2.5rem; }
+      .split.rev .copy { order: 2; }
+      .split.rev .visual { order: 1; }
+    }
+    .visual { position: relative; overflow: hidden; min-height: 270px; }
+    .visual img { width: 100%; height: 100%; object-fit: cover; min-height: 270px; transition: transform .7s ease; }
+    .visual:hover img { transform: scale(1.03); }
+    .visual-label {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      padding: .65rem .85rem;
+      background: linear-gradient(transparent, rgba(0,0,0,.75));
+      font-family: var(--mono); font-size: .65rem; letter-spacing: .1em; text-transform: uppercase;
+      color: #ffe0b8;
+    }
+
+    .pillars { display: grid; gap: 1rem; }
+    @media (min-width: 720px) { .pillars { grid-template-columns: repeat(3, 1fr); } }
+    .pillar { background: #fff; border: 1px solid #e5e5e5; overflow: hidden; transition: transform .25s ease; }
+    .section.alt .pillar { background: #fff; }
+    .pillar:hover { transform: translateY(-3px); }
+    .pillar img { width: 100%; height: 160px; object-fit: cover; }
+    .pillar-body { padding: 1rem 1.05rem 1.15rem; }
+    .pillar h3 { font-size: 1.05rem; text-transform: uppercase; letter-spacing: .04em; margin-bottom: .4rem; font-weight: 400; }
+    .pillar p { color: #555; font-size: .95rem; line-height: 1.45; }
+
+    .exp-list { list-style: none; display: grid; gap: .65rem; margin-top: 1.1rem; }
+    .exp-list li {
+      padding: .8rem .95rem; border-left: 3px solid var(--coral);
+      background: #f7f7f5; font-size: .95rem; line-height: 1.45; color: #333;
+    }
+
+    .replace-grid { display: grid; gap: 1rem; }
+    @media (min-width: 800px) { .replace-grid { grid-template-columns: 1fr 1fr; } }
+    .swap-card {
+      display: grid; grid-template-columns: 1fr 1fr; gap: .5rem;
+      border: 1px solid #e0e0e0; padding: .65rem; background: #fff;
+    }
+    .swap-card img { width: 100%; height: 112px; object-fit: cover; background: #ddd; }
+    .swap-card figcaption {
+      font-family: var(--mono); font-size: .62rem; letter-spacing: .08em;
+      text-transform: uppercase; margin-top: .3rem; font-weight: 500;
+    }
+    .bad { color: #c2410c; }
+    .good { color: #0f766e; }
+    .swap-note { grid-column: 1/-1; font-size: .85rem; color: #555; line-height: 1.4; padding: .2rem 0; }
+
+    .btn-dark {
+      display: inline-flex; align-items: center;
+      padding: .85rem 1.2rem; background: var(--ink); color: #fff;
+      font-size: .8rem; letter-spacing: .08em; text-transform: uppercase;
+    }
+    .btn-dark:hover { background: #333; }
+
+    footer {
+      background: #2a2a2a; color: rgba(255,255,255,.65);
+      padding: 1.1rem clamp(1rem, 3vw, 2.5rem);
+      font-size: .78rem; display: flex; flex-wrap: wrap; gap: .75rem 1.5rem;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Wells Analytics home">
+      <img class="brand-logo" src="wells-logo.png" alt="Wells Analytics LLC" width="160" height="68" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="#focus">Focus Areas</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#star-tides">STAR-TIDES</a></li>
+      <li><a href="#replace">Image Plan</a></li>
+      <li><a href="#contact">Connect</a></li>
+    </ul>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-label="Wells Analytics hero">
+      <div class="hero-geo" aria-hidden="true">
+        <!-- Luminous blue + green facets: calm soft left → brighter active right -->
+        <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="L" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#9bb5ac"/>
+              <stop offset="100%" stop-color="#aec9b8"/>
+            </linearGradient>
+            <linearGradient id="M" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0%" stop-color="#b5d9c0"/>
+              <stop offset="100%" stop-color="#8fd0d0"/>
+            </linearGradient>
+            <linearGradient id="R" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#7ec4e8"/>
+              <stop offset="55%" stop-color="#a8daf5"/>
+              <stop offset="100%" stop-color="#e8f5fc"/>
+            </linearGradient>
+          </defs>
+          <polygon fill="url(#L)" points="0,0 680,0 520,900 0,900"/>
+          <polygon fill="#a3bdb2" points="0,0 400,0 260,300 0,460"/>
+          <polygon fill="#b4cdb8" points="260,300 500,160 540,500 160,600"/>
+          <polygon fill="#98b5ac" points="0,460 160,600 100,900 0,900"/>
+          <polygon fill="url(#M)" points="500,160 880,30 960,400 540,500"/>
+          <polygon fill="#9fd4c4" points="540,500 960,400 840,900 260,900"/>
+          <polygon fill="#b0ddc8" points="680,0 1080,0 960,400 880,30"/>
+          <polygon fill="url(#R)" points="1080,0 1600,0 1600,500 960,400"/>
+          <polygon fill="#b8e2f6" points="960,400 1600,500 1600,900 840,900" opacity=".95"/>
+          <polygon fill="#dff1fa" points="1220,70 1500,30 1600,200 1300,260" opacity=".95"/>
+          <polygon fill="#7ec8dc" points="880,30 1080,0 1220,70 960,400"/>
+          <polygon fill="#9ed0e8" points="840,900 1180,620 1600,900"/>
+          <polygon fill="#ffffff" points="1360,150 1500,110 1540,200 1400,230" opacity=".55"/>
+          <polygon fill="#d4c4a0" points="720,200 860,120 900,280 760,320" opacity=".4"/>
+        </svg>
+      </div>
+      <div class="hero-veil"></div>
+
+      <div class="hero-inner">
+        <div>
+          <div class="tag"><i></i> 001 — Strategy · Technology · Decision-Making</div>
+          <h1>
+            Wells Analytics
+            <span>Technology, strategy &amp; decision-making</span>
+          </h1>
+          <p class="hero-lead">
+            Connecting technology, strategy, and decision-making for leaders who work across government, industry, and communities — including the STAR-TIDES network.
+            <br /><span class="ph">(Placeholder — swap in Lin’s final text)</span>
+          </p>
+          <div class="cta-row">
+            <a class="btn" href="#contact">What we do →</a>
+            <a class="btn btn-ghost" href="#focus">Start a conversation</a>
+          </div>
+        </div>
+
+        <div class="ornament" aria-hidden="true">
+          <!-- Original: compass rose + decision network (Wells / strategy) -->
+          <svg class="wells-mark" viewBox="0 0 200 200" fill="none">
+            <circle cx="100" cy="100" r="78" stroke="rgba(255,255,255,.35)" stroke-width="0.8"/>
+            <circle cx="100" cy="100" r="52" stroke="rgba(255,255,255,.45)" stroke-width="0.7"/>
+            <!-- compass points -->
+            <path d="M100 28 L108 100 L100 172 L92 100 Z" fill="rgba(255,255,255,.2)" stroke="rgba(255,255,255,.85)" stroke-width="0.8"/>
+            <path d="M28 100 L100 92 L172 100 L100 108 Z" fill="rgba(255,255,255,.12)" stroke="rgba(255,255,255,.75)" stroke-width="0.8"/>
+            <circle cx="100" cy="100" r="6" fill="rgba(249,129,11,.95)" stroke="#fff" stroke-width="1"/>
+            <!-- network nodes: strategy / connections -->
+            <circle cx="58" cy="58" r="3.2" fill="#fff"/>
+            <circle cx="142" cy="58" r="3.2" fill="#fff"/>
+            <circle cx="58" cy="142" r="3.2" fill="#fff"/>
+            <circle cx="142" cy="142" r="3.2" fill="#fff"/>
+            <circle cx="100" cy="42" r="2.4" fill="#fff"/>
+            <circle cx="158" cy="100" r="2.4" fill="#fff"/>
+            <line x1="58" y1="58" x2="100" y2="100" stroke="rgba(255,255,255,.55)" stroke-width="0.7"/>
+            <line x1="142" y1="58" x2="100" y2="100" stroke="rgba(255,255,255,.55)" stroke-width="0.7"/>
+            <line x1="58" y1="142" x2="100" y2="100" stroke="rgba(255,255,255,.55)" stroke-width="0.7"/>
+            <line x1="142" y1="142" x2="100" y2="100" stroke="rgba(255,255,255,.55)" stroke-width="0.7"/>
+            <line x1="58" y1="58" x2="142" y2="58" stroke="rgba(255,255,255,.28)" stroke-width="0.6"/>
+            <line x1="142" y1="58" x2="142" y2="142" stroke="rgba(255,255,255,.28)" stroke-width="0.6"/>
+          </svg>
+          <div class="coord">38.85°N · 77.30°W — Fairfax, VA</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="partner-bar">
+      <strong>Wells Analytics LLC</strong>
+      <span>Strategy consulting · Fairfax, VA · Mock for Lin / vendor review</span>
+    </div>
+
+    <section class="section" id="about-brief">
+      <div class="section-inner split">
+        <div class="copy">
+          <div class="kicker">What we do</div>
+          <h2>Turn strategy into decisions that hold up under pressure</h2>
+          <p class="lede">
+            Wells Analytics helps senior leaders navigate converging, accelerating, and disruptive technologies — linking policy, technology, and people so plans become durable results.
+          </p>
+          <a class="btn-dark" href="#contact">Schedule a consultation →</a>
+        </div>
+        <figure class="visual">
+          <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1200&q=80" alt="Strategy collaboration" loading="lazy" />
+          <figcaption class="visual-label">Replace server stock → strategy collaboration</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section alt" id="focus">
+      <div class="section-inner">
+        <div class="kicker">Focus</div>
+        <h2>Focus areas that match the work</h2>
+        <p class="lede">Relevant imagery — not generic globe or podium photos.</p>
+        <div class="pillars">
+          <article class="pillar">
+            <img src="https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&w=900&q=80" alt="Communities" loading="lazy" />
+            <div class="pillar-body">
+              <h3>Civil–military &amp; communities</h3>
+              <p>Public–private cooperation and community networks — including STAR-TIDES.</p>
+            </div>
+          </article>
+          <article class="pillar">
+            <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80" alt="Emerging tech" loading="lazy" />
+            <div class="pillar-body">
+              <h3>Cyber, space &amp; emerging tech</h3>
+              <p>Strategy for cyber, space, energy, and autonomous systems.</p>
+            </div>
+          </article>
+          <article class="pillar">
+            <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=900&q=80" alt="Resilience" loading="lazy" />
+            <div class="pillar-body">
+              <h3>Resilience &amp; human security</h3>
+              <p>Capacity that holds before, during, and after disruption.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="experience">
+      <div class="section-inner split rev">
+        <div class="copy">
+          <div class="kicker">Managing Partner</div>
+          <h2>Expertise backed by experience</h2>
+          <p class="lede">
+            Dr. Linton Wells II has held senior positions across C3I and the interface between policy and technology — including Acting ASD for Networks and Information Integration / DoD CIO.
+          </p>
+          <ul class="exp-list">
+            <li>Civil–military integration, public–private cooperation, STAR-TIDES</li>
+            <li>Private-sector adult learning for national security institutions</li>
+            <li>Cyber, space, energy, and autonomous vehicle challenges</li>
+            <li>Human resilience and chemical/biological defense</li>
+          </ul>
+        </div>
+        <figure class="visual">
+          <img src="https://images.unsplash.com/photo-1504384764586-bb4cdc1707b0?auto=format&fit=crop&w=1200&q=80" alt="Systems environment" loading="lazy" />
+          <figcaption class="visual-label">Replace podium stock → mission / systems</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section dark" id="star-tides">
+      <div class="section-inner split">
+        <div class="copy">
+          <div class="kicker">Signature network</div>
+          <h2>STAR-TIDES</h2>
+          <p class="lede">
+            Connecting innovators, communities, and institutions around practical capabilities for resilience and human security — year-round, not only at the demo.
+          </p>
+          <a class="btn" href="#contact">Talk about STAR-TIDES →</a>
+        </div>
+        <figure class="visual">
+          <img src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&w=1200&q=80" alt="Community resilience" loading="lazy" />
+          <figcaption class="visual-label">Replace globe → community / field resilience</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section alt" id="replace">
+      <div class="section-inner">
+        <div class="kicker">Vendor notes</div>
+        <h2>Image replacement plan</h2>
+        <p class="lede">For the Tuesday call — swap weak stock for on-message visuals.</p>
+        <div class="replace-grid">
+          <div class="swap-card">
+            <figure>
+              <img src="https://12205a1.netsolhost.com/__static/3609be56-284a-4fdf-b983-5deb22258697/image_quad" alt="Current geometric" />
+              <figcaption class="bad">Current — purple/orange</figcaption>
+            </figure>
+            <figure>
+              <img src="https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=800&q=80" alt="Lighter abstract" style="filter:hue-rotate(160deg) saturate(.7) brightness(1.15)" />
+              <figcaption class="good">New — lighter blue–green hero</figcaption>
+            </figure>
+            <p class="swap-note"><strong>Hero:</strong> Keep calm→active pull; use luminous blue–green (this mock), not dark navy blocks.</p>
+          </div>
+          <div class="swap-card">
+            <figure>
+              <img src="https://12205a1.netsolhost.com/__static/786687bb-fd8c-4985-835f-2eca0b0bb556/image_quad" alt="Globe" />
+              <figcaption class="bad">Current — globe</figcaption>
+            </figure>
+            <figure>
+              <img src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&w=800&q=80" alt="Community" />
+              <figcaption class="good">New — community</figcaption>
+            </figure>
+            <p class="swap-note"><strong>Globe / podium / servers:</strong> Replace with strategy, systems, and STAR-TIDES-relevant scenes.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="section-inner">
+        <div class="kicker">Connect</div>
+        <h2>Let’s get in touch</h2>
+        <p class="lede">Discover how technology, strategy, and decision-making can align to support your goals.</p>
+        <a class="btn" href="mailto:linwells@gmail.com">Connect with us →</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div>© 2026 Wells Analytics LLC · Mock for review</div>
+    <div>Fonts/style cues from alfa8 · Blue–green combo · Hero text pending Lin</div>
+  </footer>
+</body>
+</html>
